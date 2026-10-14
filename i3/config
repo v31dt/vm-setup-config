@@ -30,9 +30,10 @@ client.urgent           #2f343a #900000 #ffffff #900000   #900000
 # only ~/.xinitrc runs the xrdb merge and the DM path skips it. Without this the
 # terminal falls back to an ugly fixed font and the paste keybind is dead.
 exec_always --no-startup-id xrdb -nocpp -merge ~/.Xresources
-# Host <-> guest clipboard under QEMU/SPICE (a GUI desktop starts this for you;
-# i3 does not). Needed for Ctrl+Shift+V to paste from the host.
-exec --no-startup-id spice-vdagent
+# Host <-> guest clipboard + auto-resize. A full desktop autostarts the guest
+# agent; i3 does not, so start whichever is installed: spice-vdagent (QEMU/SPICE)
+# or vmware-user (VMware). Harmless if neither is present. Needed for paste.
+exec --no-startup-id sh -c 'command -v spice-vdagent >/dev/null && spice-vdagent; command -v vmware-user-suid-wrapper >/dev/null && vmware-user-suid-wrapper'
 # Wallpaper (feh); falls back to a solid dark-blue root if the image is missing.
 exec_always --no-startup-id feh --no-fehbg --bg-fill ~/.config/i3/wallpaper.jpg || xsetroot -solid "#0b1220"
 # Bar.

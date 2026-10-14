@@ -5,3 +5,21 @@
 # This env var fixes it. The `wmname LG3D` exec in i3/config is a fallback for
 # the rare app that ignores the var.
 export _JAVA_AWT_WM_NONREPARENTING=1
+
+# Scaling for apps that ignore Xft.dpi. Everything follows the per-machine
+# Xft.dpi in ~/.Xresources; with no value set (or 96) nothing here applies.
+dpi=$(sed -n 's/^Xft\.dpi:[[:space:]]*\([0-9][0-9]*\).*/\1/p' ~/.Xresources 2>/dev/null | head -n 1)
+if [ -n "$dpi" ] && [ "$dpi" -gt 96 ]; then
+    # GTK (nautilus): whole-number UI scale only; halve font DPI to match so
+    # text is not scaled twice. At e.g. 168 GTK gets the bigger text only.
+    int=$((dpi / 96))
+    if [ "$int" -ge 2 ]; then
+        export GDK_SCALE=$int
+        export GDK_DPI_SCALE=$(awk -v i="$int" 'BEGIN { printf "%.4f", 1 / i }')
+    fi
+    # Qt (wireshark etc.): derive the scale from Xft.dpi.
+    export QT_ENABLE_HIGHDPI_SCALING=1
+    # Java (Burp, Ghidra): fractional scale is fine here.
+    export _JAVA_OPTIONS="-Dsun.java2d.uiScale=$(awk -v d="$dpi" 'BEGIN { printf "%.2f", d / 96 }')"
+fi
+unset dpi int

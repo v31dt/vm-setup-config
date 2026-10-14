@@ -5,7 +5,9 @@
 
 set $mod Mod4
 set $term alacritty
-set $menu rofi -show drun
+# rofi ignores Xft.dpi (its auto modes guess from the reported screen size,
+# which is fake in a VM), so pass this machine's Xft.dpi, or 96 if unset.
+set $menu rofi -show drun -dpi "$(xrdb -query | awk '/^Xft.dpi:/ {print $2}' | grep . || echo 96)"
 set $files nautilus
 # Move the pointer to the centre of the newly focused window, so keyboard focus
 # and the mouse stay together (i3's own mouse_warping only covers switching

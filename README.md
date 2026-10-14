@@ -80,6 +80,21 @@ xdg-mime default org.gnome.Nautilus.desktop inode/directory
 ```
 
 
+**Scaling (per machine, optional).** On a high-res display everything is tiny
+at the default 96 DPI. Set a DPI for this machine only and every app follows
+it: i3, alacritty, rofi, polybar and Firefox read it directly, and
+`~/.xprofile` derives the matching settings for GTK (Nautilus), Qt (Wireshark)
+and Java (Burp, Ghidra) at login. 144 = 1.5x, 168 = 1.75x, 192 = 2x (GTK can
+only scale its UI by whole numbers, so below 192 it just gets bigger text):
+
+```sh
+printf 'Xft.dpi: 192\nXcursor.size: 48\n' > ~/.Xresources
+```
+
+`~/.xinitrc` loads it on `startx`; display-manager logins load it too. Log out
+and back in for it to take effect everywhere. Java will print "Picked up
+_JAVA_OPTIONS" on start; that is just this setting being applied.
+
 ## 3. Start it
 
 **No display manager (simplest for a VM):**

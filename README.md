@@ -4,7 +4,7 @@ Minimal **i3 (X11)** setup for a throwaway pentest / HTB testing VM. Written for
 **Kali / Debian (apt)**; an Arch `pacman` line is noted at the end.
 
 Tiling WM + a simple status bar (workspaces · CPU · MEM · VOL · VPN · NET · clock),
-`urxvt` terminal, `rofi` launcher, and the env tweak that stops **Ghidra/Burp**
+`alacritty` terminal, `rofi` launcher, and the env tweak that stops **Ghidra/Burp**
 from rendering blank. No idle/lock, night light, pomodoro, or other daily-driver
 cruft — just a working tiling desktop.
 
@@ -14,7 +14,7 @@ Ported from a Sway config; keybinds kept approximately the same (`$mod` = Super)
 
 ```sh
 sudo apt update && sudo apt install -y \
-  i3-wm i3status rxvt-unicode rofi polybar \
+  i3-wm i3status alacritty rofi polybar autotiling picom \
   xserver-xorg xinit x11-xserver-utils \
   maim xclip xdotool feh \
   fonts-dejavu fonts-jetbrains-mono \
@@ -36,8 +36,7 @@ sudo apt install -y virtualbox-guest-x11
 The i3 autostart launches whichever agent is installed, so the same config
 works on all three.
 
-- `x11-xserver-utils` provides both `xsetroot` (wallpaper fallback) and `xrdb`
-  (loads `.Xresources`).
+- `x11-xserver-utils` provides `xsetroot` (wallpaper fallback).
 - `pulseaudio-utils` gives `pactl` for the volume keys; recent Kali runs
   PipeWire, and `pactl` + the bar's `pulseaudio` module both work with it.
 - `firefox-esr` is Kali's Firefox package name (plain `firefox` won't resolve).
@@ -50,8 +49,8 @@ works on all three.
 **Arch equivalent** (same tools, different names):
 
 ```sh
-sudo pacman -S --needed i3-wm i3status rxvt-unicode rofi polybar \
-  xorg-server xorg-xinit xorg-xsetroot xorg-xrdb maim xclip xdotool feh wmname \
+sudo pacman -S --needed i3-wm i3status alacritty rofi polybar autotiling picom \
+  xorg-server xorg-xinit xorg-xsetroot maim xclip xdotool feh wmname \
   ttf-dejavu ttf-jetbrains-mono-nerd pulseaudio pavucontrol firefox
 ```
 
@@ -65,13 +64,15 @@ cp i3/config              ~/.config/i3/config
 cp polybar/config.ini     ~/.config/polybar/config.ini
 cp polybar/launch.sh      ~/.config/polybar/launch.sh
 cp polybar/scripts/*.sh   ~/.config/polybar/scripts/
-cp x11/Xresources         ~/.Xresources
+mkdir -p ~/.config/alacritty
+cp alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
 cp x11/.xprofile          ~/.xprofile
 cp x11/.xinitrc           ~/.xinitrc
 cp wallpaper.jpg          ~/.config/i3/wallpaper.jpg
 
 chmod +x ~/.config/polybar/launch.sh ~/.config/polybar/scripts/*.sh
 ```
+
 
 ## 3. Start it
 
@@ -81,7 +82,7 @@ chmod +x ~/.config/polybar/launch.sh ~/.config/polybar/scripts/*.sh
 startx
 ```
 
-`~/.xinitrc` sources `~/.xprofile`, merges `~/.Xresources`, and launches i3.
+`~/.xinitrc` sources `~/.xprofile` and launches i3.
 
 **With a display manager** (e.g. `ly`, `lightdm`): pick the **i3** session at
 login. Display managers source `~/.xprofile` automatically.
@@ -118,7 +119,7 @@ usually fix it (hypervisor-dependent):
 
 | Key | Action |
 |-----|--------|
-| `$mod+Return` | terminal (urxvt) |
+| `$mod+Return` | terminal (alacritty) |
 | `$mod+Space` | launcher (rofi) |
 | `$mod+b` | firefox |
 | `$mod+q` | close window |
@@ -146,7 +147,7 @@ polybar/config.ini        bar layout and modules
 polybar/launch.sh         restartable bar launcher
 polybar/scripts/ip.sh     primary IPv4 (NET module)
 polybar/scripts/vpn.sh    tun0/tap0 IP (VPN module)
-x11/Xresources            urxvt (font, dark-blue theme, clipboard)
+alacritty/alacritty.toml  terminal (dark-blue theme, padding, cursor)
 x11/.xprofile             Java-on-tiling fix, login env
 x11/.xinitrc              startx entry point
 wallpaper.jpg             desktop wallpaper (metadata stripped)

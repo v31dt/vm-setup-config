@@ -1,0 +1,49 @@
+# ~/.config/alacritty/alacritty.toml
+# No [font] section: uses the system default monospace. Alacritty does
+# fontconfig fallback, so glyphs missing from that font (e.g. Kali's prompt
+# separator) are borrowed from other installed fonts automatically.
+# Copy/paste: Ctrl+Shift+C / Ctrl+Shift+V (alacritty defaults).
+
+[window]
+padding = { x = 12, y = 10 }
+# Light see-through like Kali's stock terminal. Needs a compositor (picom,
+# started from the i3 config); without one this is simply ignored.
+opacity = 0.85
+
+[scrolling]
+history = 50000
+
+[cursor]
+style = { shape = "Block", blinking = "Off" }
+
+[mouse]
+hide_when_typing = true
+
+# Kali-ish dark blue
+[colors.primary]
+background = "#0b1220"
+foreground = "#c7d0e0"
+
+[colors.cursor]
+cursor = "#1793d1"
+text = "#0b1220"
+
+[colors.normal]
+black = "#0b1220"
+red = "#e06c75"
+green = "#56b76a"
+yellow = "#d9a441"
+blue = "#1793d1"
+magenta = "#9a6fdd"
+cyan = "#4bb8c4"
+white = "#c7d0e0"
+
+[colors.bright]
+black = "#3a4556"
+red = "#ef8a92"
+green = "#74cf86"
+yellow = "#e7bd63"
+blue = "#3fb0ef"
+magenta = "#b58cf0"
+cyan = "#68d3df"
+white = "#eef2f8"

@@ -1,0 +1,42 @@
+! ~/.Xresources — urxvt (rxvt-unicode), adapted from the old foot.ini.
+! Load with:  xrdb -merge ~/.Xresources   (done by ~/.xinitrc on startx).
+
+! --- foot.ini [main]/[cursor]/[mouse] equivalents ---
+URxvt.font:            xft:JetBrainsMono Nerd Font:size=12
+URxvt.letterSpace:     0
+URxvt.internalBorder:  11
+URxvt.saveLines:       50000
+URxvt.scrollBar:       false
+URxvt.cursorBlink:     false
+URxvt.cursorUnderline: false
+URxvt.pointerBlank:    true
+URxvt.urgentOnBell:    true
+
+! --- clipboard (foot used Ctrl+c/Ctrl+v; Shift variants keep Ctrl+C = SIGINT) ---
+URxvt.perl-ext-common: default,selection-to-clipboard,matcher
+URxvt.keysym.Control-Shift-C: eval:selection_to_clipboard
+URxvt.keysym.Control-Shift-V: eval:paste_clipboard
+URxvt.url-launcher:    xdg-open
+URxvt.matcher.button:  1
+
+! --- Kali-ish dark-blue palette (replaces foot's light parchment theme) ---
+URxvt.background:  #0b1220
+URxvt.foreground:  #c7d0e0
+URxvt.cursorColor: #1793d1
+! black / red / green / yellow / blue / magenta / cyan / white
+URxvt.color0:  #0b1220
+URxvt.color1:  #e06c75
+URxvt.color2:  #56b76a
+URxvt.color3:  #d9a441
+URxvt.color4:  #1793d1
+URxvt.color5:  #9a6fdd
+URxvt.color6:  #4bb8c4
+URxvt.color7:  #c7d0e0
+URxvt.color8:  #3a4556
+URxvt.color9:  #ef8a92
+URxvt.color10: #74cf86
+URxvt.color11: #e7bd63
+URxvt.color12: #3fb0ef
+URxvt.color13: #b58cf0
+URxvt.color14: #68d3df
+URxvt.color15: #eef2f8

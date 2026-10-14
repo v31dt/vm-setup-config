@@ -1,0 +1,7 @@
+# ~/.xprofile — sourced at X login (display managers) and by ~/.xinitrc (startx).
+#
+# Java/Swing apps (Ghidra, Burp Suite, JD-GUI, etc.) render as a blank grey
+# window under tiling WMs because i3 isn't on Java's list of "reparenting" WMs.
+# This env var fixes it. The `wmname LG3D` exec in i3/config is a fallback for
+# the rare app that ignores the var.
+export _JAVA_AWT_WM_NONREPARENTING=1

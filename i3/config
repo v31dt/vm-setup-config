@@ -1,0 +1,113 @@
+# i3 config — pentest/HTB testing VM (X11)
+# Ported from a Sway setup; trimmed to the essentials for a throwaway VM.
+# No idle/lock, no night light, no pomodoro, no app-specific launchers.
+# $mod = Super (Mod4). Copy to ~/.config/i3/config.
+
+set $mod Mod4
+set $term urxvt
+set $menu rofi -show drun
+
+# Roboto-ish fallback; DejaVu is always present after ttf-dejavu.
+font pango:DejaVu Sans Mono 10
+
+# Gaps (merged into i3 >= 4.22; harmless to keep). Matches the old 8px-between,
+# 2px-to-edge look.
+gaps inner 8
+gaps outer 2
+default_border pixel 4
+default_floating_border pixel 4
+
+# i3 default palette (dark blue) — Kali-ish out of the box.
+#                       border  bg      text    indicator child_border
+client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+
+# --- Autostart -------------------------------------------------------------
+# Solid dark-blue root (no wallpaper/feh dependency).
+exec_always --no-startup-id xsetroot -solid "#0b1220"
+# Bar.
+exec_always --no-startup-id ~/.config/polybar/launch.sh
+# Belt-and-suspenders for Java/Swing apps (Ghidra/Burp) in case ~/.xprofile
+# wasn't sourced by the display manager. See x11/.xprofile.
+exec --no-startup-id wmname LG3D
+
+# --- Core ------------------------------------------------------------------
+bindsym $mod+Return exec $term
+bindsym $mod+b      exec firefox
+bindsym $mod+space  exec $menu
+bindsym $mod+q      kill
+# Force-kill the focused (unresponsive) window.
+bindsym $mod+Shift+q exec --no-startup-id kill -9 $(xdotool getactivewindow getwindowpid)
+bindsym $mod+f       fullscreen toggle
+bindsym $mod+Shift+f floating toggle
+bindsym $mod+p       split toggle
+# Hold $mod and drag: left = move, right = resize.
+floating_modifier $mod
+
+# --- Focus (h/j/k/l; l is focus-right here, not lock) ----------------------
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Left  focus left
+bindsym $mod+Down  focus down
+bindsym $mod+Up    focus up
+bindsym $mod+Right focus right
+
+# --- Move ------------------------------------------------------------------
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+Left  move left
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Up    move up
+bindsym $mod+Shift+Right move right
+
+# --- Resize (direct, 40px steps; repeats while held) -----------------------
+bindsym $mod+Ctrl+l     resize grow   width  40 px or 4 ppt
+bindsym $mod+Ctrl+h     resize shrink width  40 px or 4 ppt
+bindsym $mod+Ctrl+k     resize shrink height 40 px or 4 ppt
+bindsym $mod+Ctrl+j     resize grow   height 40 px or 4 ppt
+bindsym $mod+Ctrl+Right resize grow   width  40 px or 4 ppt
+bindsym $mod+Ctrl+Left  resize shrink width  40 px or 4 ppt
+bindsym $mod+Ctrl+Up    resize shrink height 40 px or 4 ppt
+bindsym $mod+Ctrl+Down  resize grow   height 40 px or 4 ppt
+
+# --- Workspaces (1-9; Shift = move container and follow) -------------------
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+Shift+1 move container to workspace number 1; workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2; workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3; workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4; workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5; workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6; workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7; workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8; workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9; workspace number 9
+bindsym $mod+Prior workspace prev
+bindsym $mod+Next  workspace next
+
+# --- Screenshots (maim; region to clipboard+file, or whole screen) ---------
+bindsym Print      exec --no-startup-id maim -s | tee ~/Pictures/$(date +%F_%H%M%S).png | xclip -selection clipboard -t image/png
+bindsym $mod+Print exec --no-startup-id maim | tee ~/Pictures/$(date +%F_%H%M%S).png | xclip -selection clipboard -t image/png
+
+# --- Volume / brightness (works without a desktop audio daemon UI) ---------
+bindsym --release XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym --release XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym --release XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# --- i3 session ------------------------------------------------------------
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'Exit i3?' -B 'Yes' 'i3-msg exit'"

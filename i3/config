@@ -6,6 +6,11 @@
 set $mod Mod4
 set $term alacritty
 set $menu rofi -show drun
+set $files nautilus
+# Move the pointer to the centre of the newly focused window, so keyboard focus
+# and the mouse stay together (i3's own mouse_warping only covers switching
+# monitors). Chained onto the focus binds below. Needs xdotool.
+set $warp exec --no-startup-id "sh -c 'eval $(xdotool getactivewindow getwindowgeometry --shell); xdotool mousemove $((X + WIDTH / 2)) $((Y + HEIGHT / 2))'"
 
 # Roboto-ish fallback; DejaVu is always present after ttf-dejavu.
 font pango:DejaVu Sans Mono 10
@@ -44,6 +49,7 @@ exec --no-startup-id wmname LG3D
 # --- Core ------------------------------------------------------------------
 bindsym $mod+Return exec $term
 bindsym $mod+b      exec firefox
+bindsym $mod+e      exec $files
 bindsym $mod+space  exec $menu
 bindsym $mod+q      kill
 # Force-kill the focused (unresponsive) window.
@@ -55,14 +61,14 @@ bindsym $mod+p       split toggle
 floating_modifier $mod
 
 # --- Focus (h/j/k/l; l is focus-right here, not lock) ----------------------
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
-bindsym $mod+Left  focus left
-bindsym $mod+Down  focus down
-bindsym $mod+Up    focus up
-bindsym $mod+Right focus right
+bindsym $mod+h focus left, $warp
+bindsym $mod+j focus down, $warp
+bindsym $mod+k focus up, $warp
+bindsym $mod+l focus right, $warp
+bindsym $mod+Left  focus left, $warp
+bindsym $mod+Down  focus down, $warp
+bindsym $mod+Up    focus up, $warp
+bindsym $mod+Right focus right, $warp
 
 # --- Move ------------------------------------------------------------------
 bindsym $mod+Shift+h move left

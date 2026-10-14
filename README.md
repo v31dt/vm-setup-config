@@ -18,7 +18,7 @@ sudo apt update && sudo apt install -y \
   xserver-xorg xinit x11-xserver-utils \
   maim xclip xdotool feh \
   fonts-dejavu fonts-jetbrains-mono \
-  pulseaudio-utils pavucontrol firefox-esr
+  pulseaudio-utils pavucontrol firefox-esr nautilus
 ```
 
 Then add the **guest tools for your hypervisor** (host↔guest clipboard +
@@ -51,7 +51,7 @@ works on all three.
 ```sh
 sudo pacman -S --needed i3-wm i3status alacritty rofi polybar autotiling \
   xorg-server xorg-xinit xorg-xsetroot maim xclip xdotool feh wmname \
-  ttf-dejavu ttf-jetbrains-mono-nerd pulseaudio pavucontrol firefox
+  ttf-dejavu pulseaudio pavucontrol firefox nautilus
 ```
 
 ## 2. Copy the config files
@@ -71,6 +71,12 @@ cp x11/.xinitrc           ~/.xinitrc
 cp wallpaper.jpg          ~/.config/i3/wallpaper.jpg
 
 chmod +x ~/.config/polybar/launch.sh ~/.config/polybar/scripts/*.sh
+```
+
+Make nautilus the default for opening folders (other apps' "open folder"):
+
+```sh
+xdg-mime default org.gnome.Nautilus.desktop inode/directory
 ```
 
 
@@ -122,9 +128,10 @@ usually fix it (hypervisor-dependent):
 | `$mod+Return` | terminal (alacritty) |
 | `$mod+Space` | launcher (rofi) |
 | `$mod+b` | firefox |
+| `$mod+e` | file manager (nautilus) |
 | `$mod+q` | close window |
 | `$mod+Shift+q` | force-kill focused window |
-| `$mod+h/j/k/l` / arrows | focus left/down/up/right |
+| `$mod+h/j/k/l` / arrows | focus left/down/up/right (pointer follows) |
 | `$mod+Shift+h/j/k/l` | move window |
 | `$mod+Ctrl+h/j/k/l` | resize (40px steps) |
 | `$mod+1..9` | switch workspace |

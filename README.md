@@ -1,6 +1,7 @@
 # vm-setup-config
 
-Minimal **i3 (X11)** setup for a throwaway pentest / HTB testing VM on Arch.
+Minimal **i3 (X11)** setup for a throwaway pentest / HTB testing VM. Written for
+**Kali / Debian (apt)**; an Arch `pacman` line is noted at the end.
 
 Tiling WM + a simple status bar (workspaces · CPU · MEM · VOL · VPN · NET · clock),
 `urxvt` terminal, `rofi` launcher, and the env tweak that stops **Ghidra/Burp**
@@ -12,19 +13,32 @@ Ported from a Sway config; keybinds kept approximately the same (`$mod` = Super)
 ## 1. Install packages
 
 ```sh
-sudo pacman -S --needed \
+sudo apt update && sudo apt install -y \
   i3-wm i3status rxvt-unicode rofi polybar \
-  xorg-server xorg-xinit xorg-xsetroot xorg-xrdb \
-  maim xclip xdotool wmname feh \
-  ttf-dejavu ttf-jetbrains-mono-nerd \
-  pulseaudio-alsa pavucontrol firefox
+  xserver-xorg xinit x11-xserver-utils \
+  maim xclip xdotool feh \
+  fonts-dejavu fonts-jetbrains-mono \
+  pulseaudio-utils pavucontrol firefox-esr
 ```
 
-- `pulseaudio-alsa` → if your VM uses PipeWire instead, swap for
-  `pipewire-pulse` (the bar's `pulseaudio` module and `pactl` keys work with
-  either).
-- `ttf-jetbrains-mono-nerd` is the urxvt font; drop it and the `URxvt.font`
-  line falls back to DejaVu.
+- `x11-xserver-utils` provides both `xsetroot` (wallpaper fallback) and `xrdb`
+  (loads `.Xresources`).
+- `pulseaudio-utils` gives `pactl` for the volume keys; recent Kali runs
+  PipeWire, and `pactl` + the bar's `pulseaudio` module both work with it.
+- `firefox-esr` is Kali's Firefox package name (plain `firefox` won't resolve).
+- `wmname` (the Java-fallback trick) isn't reliably packaged on Kali — skip it;
+  the `_JAVA_AWT_WM_NONREPARENTING=1` env var in `~/.xprofile` does the job on
+  its own. If `apt` *does* find it, install it and the i3 `wmname LG3D` line
+  becomes a bonus fallback.
+- Kali already ships zsh, maim, etc. — `apt` just skips anything present.
+
+**Arch equivalent** (same tools, different names):
+
+```sh
+sudo pacman -S --needed i3-wm i3status rxvt-unicode rofi polybar \
+  xorg-server xorg-xinit xorg-xsetroot xorg-xrdb maim xclip xdotool feh wmname \
+  ttf-dejavu ttf-jetbrains-mono-nerd pulseaudio pavucontrol firefox
+```
 
 ## 2. Copy the config files
 
@@ -78,9 +92,12 @@ _JAVA_AWT_WM_NONREPARENTING=1 ./ghidraRun
 If i3/X won't start or the cursor is invisible under the VM's virtual GPU, these
 usually fix it (hypervisor-dependent):
 
-- Install the guest driver: `xf86-video-qxl` (QEMU/SPICE) or
-  `virtualbox-guest-utils` (VirtualBox).
-- Or force software rendering: `export LIBGL_ALWAYS_SOFTWARE=1` in `~/.xprofile`.
+- **VMware:** `sudo apt install open-vm-tools open-vm-tools-desktop
+  xserver-xorg-video-vmware` (guest driver + clipboard/auto-resize).
+- QEMU/SPICE: `xserver-xorg-video-qxl spice-vdagent`; VirtualBox:
+  `virtualbox-guest-x11`.
+- Last resort — force software rendering: `export LIBGL_ALWAYS_SOFTWARE=1` in
+  `~/.xprofile`.
 
 ## Keybinds (`$mod` = Super)
 

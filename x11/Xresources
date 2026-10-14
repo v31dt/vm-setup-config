@@ -2,7 +2,9 @@
 ! Load with:  xrdb -merge ~/.Xresources   (done by ~/.xinitrc on startx).
 
 ! --- foot.ini [main]/[cursor]/[mouse] equivalents ---
-URxvt.font:            xft:JetBrainsMono Nerd Font:size=12
+! "JetBrains Mono" matches the fonts-jetbrains-mono (Kali/Debian) and
+! ttf-jetbrains-mono (Arch) packages. Nerd Font glyphs aren't needed here.
+URxvt.font:            xft:JetBrains Mono:size=12
 URxvt.letterSpace:     0
 URxvt.internalBorder:  11
 URxvt.saveLines:       50000

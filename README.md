@@ -15,7 +15,7 @@ Ported from a Sway config; keybinds kept approximately the same (`$mod` = Super)
 sudo pacman -S --needed \
   i3-wm i3status rxvt-unicode rofi polybar \
   xorg-server xorg-xinit xorg-xsetroot xorg-xrdb \
-  maim xclip xdotool wmname \
+  maim xclip xdotool wmname feh \
   ttf-dejavu ttf-jetbrains-mono-nerd \
   pulseaudio-alsa pavucontrol firefox
 ```
@@ -39,6 +39,7 @@ cp polybar/scripts/*.sh   ~/.config/polybar/scripts/
 cp x11/Xresources         ~/.Xresources
 cp x11/.xprofile          ~/.xprofile
 cp x11/.xinitrc           ~/.xinitrc
+cp wallpaper.jpg          ~/.config/i3/wallpaper.jpg
 
 chmod +x ~/.config/polybar/launch.sh ~/.config/polybar/scripts/*.sh
 ```
@@ -116,4 +117,5 @@ polybar/scripts/vpn.sh    tun0/tap0 IP (VPN module)
 x11/Xresources            urxvt (font, dark-blue theme, clipboard)
 x11/.xprofile             Java-on-tiling fix, login env
 x11/.xinitrc              startx entry point
+wallpaper.jpg             desktop wallpaper (metadata stripped)
 ```

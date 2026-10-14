@@ -25,8 +25,8 @@ client.unfocused        #333333 #222222 #888888 #292d2e   #222222
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
 
 # --- Autostart -------------------------------------------------------------
-# Solid dark-blue root (no wallpaper/feh dependency).
-exec_always --no-startup-id xsetroot -solid "#0b1220"
+# Wallpaper (feh); falls back to a solid dark-blue root if the image is missing.
+exec_always --no-startup-id feh --no-fehbg --bg-fill ~/.config/i3/wallpaper.jpg || xsetroot -solid "#0b1220"
 # Bar.
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 # Belt-and-suspenders for Java/Swing apps (Ghidra/Burp) in case ~/.xprofile

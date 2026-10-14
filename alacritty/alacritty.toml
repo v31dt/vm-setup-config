@@ -2,7 +2,7 @@
 # No [font] section: uses the system default monospace. Alacritty does
 # fontconfig fallback, so glyphs missing from that font (e.g. Kali's prompt
 # separator) are borrowed from other installed fonts automatically.
-# Copy/paste: Ctrl+Shift+C / Ctrl+Shift+V (alacritty defaults).
+# Copy/paste on Ctrl+C / Ctrl+V; interrupt (^C) moves to Ctrl+Shift+C.
 
 [window]
 padding = { x = 12, y = 10 }
@@ -47,3 +47,13 @@ blue = "#3fb0ef"
 magenta = "#b58cf0"
 cyan = "#68d3df"
 white = "#eef2f8"
+
+# Swapped vs. terminal convention: Ctrl+C/V are clipboard, Ctrl+Shift+C sends
+# the interrupt (^C) and Ctrl+Shift+V sends a literal ^V (vim visual-block).
+[keyboard]
+bindings = [
+  { key = "C", mods = "Control",       action = "Copy" },
+  { key = "V", mods = "Control",       action = "Paste" },
+  { key = "C", mods = "Control|Shift", chars = "\u0003" },
+  { key = "V", mods = "Control|Shift", chars = "\u0016" },
+]

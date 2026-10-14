@@ -14,7 +14,7 @@ Ported from a Sway config; keybinds kept approximately the same (`$mod` = Super)
 
 ```sh
 sudo apt update && sudo apt install -y \
-  i3-wm i3status alacritty rofi polybar autotiling picom \
+  i3-wm i3status alacritty rofi polybar autotiling \
   xserver-xorg xinit x11-xserver-utils \
   maim xclip xdotool feh \
   fonts-dejavu fonts-jetbrains-mono \
@@ -49,7 +49,7 @@ works on all three.
 **Arch equivalent** (same tools, different names):
 
 ```sh
-sudo pacman -S --needed i3-wm i3status alacritty rofi polybar autotiling picom \
+sudo pacman -S --needed i3-wm i3status alacritty rofi polybar autotiling \
   xorg-server xorg-xinit xorg-xsetroot maim xclip xdotool feh wmname \
   ttf-dejavu ttf-jetbrains-mono-nerd pulseaudio pavucontrol firefox
 ```

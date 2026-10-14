@@ -6,9 +6,6 @@
 
 [window]
 padding = { x = 12, y = 10 }
-# Light see-through like Kali's stock terminal. Needs a compositor (picom,
-# started from the i3 config); without one this is simply ignored.
-opacity = 0.85
 
 [scrolling]
 history = 50000

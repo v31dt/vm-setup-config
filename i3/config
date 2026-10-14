@@ -33,10 +33,6 @@ exec --no-startup-id sh -c 'command -v spice-vdagent >/dev/null && spice-vdagent
 # window's shape — wider than tall splits beside it, taller splits below.
 # Replaces i3's fixed directional split. (apt install autotiling)
 exec_always --no-startup-id autotiling
-# Compositor, only so terminal transparency works. --config /dev/null keeps
-# picom on plain defaults (no shadows, no fading) and ignores Kali's
-# /etc/xdg/picom.conf. xrender = software backend, safe without VM GPU accel.
-exec --no-startup-id picom -b --config /dev/null --backend xrender
 # Wallpaper (feh); falls back to a solid dark-blue root if the image is missing.
 exec_always --no-startup-id feh --no-fehbg --bg-fill ~/.config/i3/wallpaper.jpg || xsetroot -solid "#0b1220"
 # Bar.

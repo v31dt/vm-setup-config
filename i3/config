@@ -29,7 +29,7 @@ client.urgent           #2f343a #900000 #ffffff #900000   #900000
 # log in through a display manager (LightDM/GDM) instead of `startx`, because
 # only ~/.xinitrc runs the xrdb merge and the DM path skips it. Without this the
 # terminal falls back to an ugly fixed font and the paste keybind is dead.
-exec_always --no-startup-id xrdb -merge ~/.Xresources
+exec_always --no-startup-id xrdb -nocpp -merge ~/.Xresources
 # Host <-> guest clipboard under QEMU/SPICE (a GUI desktop starts this for you;
 # i3 does not). Needed for Ctrl+Shift+V to paste from the host.
 exec --no-startup-id spice-vdagent

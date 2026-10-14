@@ -30,7 +30,7 @@ URxvt.keysym.Control-Shift-V: eval:paste_clipboard
 URxvt.url-launcher:    xdg-open
 URxvt.matcher.button:  1
 
-! --- Kali-ish dark-blue palette (replaces foot's light parchment theme) ---
+! --- Kali-ish dark-blue palette (replaces the old foot light-parchment theme) ---
 URxvt.background:  #0b1220
 URxvt.foreground:  #c7d0e0
 URxvt.cursorColor: #1793d1

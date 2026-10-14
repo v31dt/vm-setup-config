@@ -25,6 +25,14 @@ client.unfocused        #333333 #222222 #888888 #292d2e   #222222
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
 
 # --- Autostart -------------------------------------------------------------
+# Load ~/.Xresources (urxvt font/colours + Xft.dpi scaling). REQUIRED when you
+# log in through a display manager (LightDM/GDM) instead of `startx`, because
+# only ~/.xinitrc runs the xrdb merge and the DM path skips it. Without this the
+# terminal falls back to an ugly fixed font and the paste keybind is dead.
+exec_always --no-startup-id xrdb -merge ~/.Xresources
+# Host <-> guest clipboard under QEMU/SPICE (a GUI desktop starts this for you;
+# i3 does not). Needed for Ctrl+Shift+V to paste from the host.
+exec --no-startup-id spice-vdagent
 # Wallpaper (feh); falls back to a solid dark-blue root if the image is missing.
 exec_always --no-startup-id feh --no-fehbg --bg-fill ~/.config/i3/wallpaper.jpg || xsetroot -solid "#0b1220"
 # Bar.

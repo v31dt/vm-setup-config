@@ -1,5 +1,14 @@
 ! ~/.Xresources — urxvt (rxvt-unicode), adapted from the old foot.ini.
-! Load with:  xrdb -merge ~/.Xresources   (done by ~/.xinitrc on startx).
+! Loaded by ~/.xinitrc (startx) AND by the i3 autostart (xrdb -merge), so it
+! applies whether you use startx or a display manager login.
+
+! --- scaling ---------------------------------------------------------------
+! X11 has no true fractional scaling (that GNOME/Wayland 1.6x you had). The
+! closest is DPI-based font scaling: 96 = 1.0x, 144 = 1.5x, 150 ~= 1.56x,
+! 160 ~= 1.67x, 192 = 2.0x. This scales Xft fonts + GTK/Qt/Firefox/rofi, NOT
+! raw pixels, so it won't look identical to GNOME scaling. Tune to taste.
+Xft.dpi: 150
+Xcursor.size: 36
 
 ! --- foot.ini [main]/[cursor]/[mouse] equivalents ---
 ! "JetBrains Mono" matches the fonts-jetbrains-mono (Kali/Debian) and

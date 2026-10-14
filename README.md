@@ -16,10 +16,13 @@ Ported from a Sway config; keybinds kept approximately the same (`$mod` = Super)
 sudo apt update && sudo apt install -y \
   i3-wm i3status rxvt-unicode rofi polybar \
   xserver-xorg xinit x11-xserver-utils \
-  maim xclip xdotool feh \
+  maim xclip xdotool feh spice-vdagent \
   fonts-dejavu fonts-jetbrains-mono \
   pulseaudio-utils pavucontrol firefox-esr
 ```
+
+`spice-vdagent` gives host↔guest clipboard + display auto-resize under
+QEMU/SPICE (a full desktop autostarts it; i3 starts it from its autostart).
 
 - `x11-xserver-utils` provides both `xsetroot` (wallpaper fallback) and `xrdb`
   (loads `.Xresources`).

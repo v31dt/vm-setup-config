@@ -33,9 +33,15 @@ client.urgent           #2f343a #900000 #ffffff #900000   #900000
 
 # --- Autostart -------------------------------------------------------------
 # Host <-> guest clipboard + auto-resize. A full desktop autostarts the guest
-# agent; i3 does not, so start whichever is installed: spice-vdagent (QEMU/SPICE)
-# or vmware-user (VMware). Harmless if neither is present. Needed for paste.
-exec --no-startup-id sh -c 'command -v spice-vdagent >/dev/null && spice-vdagent; command -v vmware-user-suid-wrapper >/dev/null && vmware-user-suid-wrapper'
+# agent; i3 does not, so start whichever is installed: spice-vdagent
+# (QEMU/SPICE), vmware-user (VMware), or VBoxClient-all (VirtualBox). Harmless
+# if none are present. Needed for paste.
+exec --no-startup-id sh -c 'command -v spice-vdagent >/dev/null && spice-vdagent; command -v vmware-user-suid-wrapper >/dev/null && vmware-user-suid-wrapper; command -v VBoxClient-all >/dev/null && VBoxClient-all'
+# Auto-resize fallback: the agents above are supposed to apply the
+# hypervisor's new screen size themselves, but that's unreliable without a
+# full desktop session driving it. This polls RandR and snaps to whatever
+# mode the hypervisor is advertising. See x11/autoresize.sh.
+exec --no-startup-id ~/.config/i3/autoresize.sh
 # Smart auto-split (dwindle-like): picks split direction from the focused
 # window's shape — wider than tall splits beside it, taller splits below.
 # Replaces i3's fixed directional split. (apt install autotiling)

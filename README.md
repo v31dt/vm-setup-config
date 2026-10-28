@@ -68,9 +68,10 @@ mkdir -p ~/.config/alacritty
 cp alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
 cp x11/.xprofile          ~/.xprofile
 cp x11/.xinitrc           ~/.xinitrc
+cp x11/autoresize.sh      ~/.config/i3/autoresize.sh
 cp wallpaper.jpg          ~/.config/i3/wallpaper.jpg
 
-chmod +x ~/.config/polybar/launch.sh ~/.config/polybar/scripts/*.sh
+chmod +x ~/.config/polybar/launch.sh ~/.config/polybar/scripts/*.sh ~/.config/i3/autoresize.sh
 ```
 
 Make nautilus the default for opening folders (other apps' "open folder"):
@@ -136,6 +137,19 @@ usually fix it (hypervisor-dependent):
 - Last resort — force software rendering: `export LIBGL_ALWAYS_SOFTWARE=1` in
   `~/.xprofile`.
 
+**Auto-resize on host window resize.** The guest agent started by `i3/config`
+(whichever of spice-vdagent / vmware-user / VBoxClient-all is installed) is
+*supposed* to apply the hypervisor's new screen size itself, by calling RandR
+directly — that part of it doesn't need GNOME/KDE. In practice, on a bare i3
+session that path is flaky (it depends on session plumbing a full desktop
+normally sets up: the `spice-vdagentd` socket, the `vmtoolsd` channel, etc.).
+`x11/autoresize.sh` is a dependency-free fallback for that: it polls
+`xrandr` once a second and, whenever an output's *preferred* mode (what the
+hypervisor is currently advertising) differs from its *current* mode, applies
+it. It's a no-op — no flicker — once they already match, and it's harmless to
+run alongside a working agent. i3's autostart launches it for you; nothing
+else to configure.
+
 ## Keybinds (`$mod` = Super)
 
 | Key | Action |
@@ -172,5 +186,6 @@ polybar/scripts/vpn.sh    tun0/tap0 IP (VPN module)
 alacritty/alacritty.toml  terminal (dark-blue theme, padding, cursor)
 x11/.xprofile             Java-on-tiling fix, login env
 x11/.xinitrc              startx entry point
+x11/autoresize.sh         VM host-resize fallback (polls RandR)
 wallpaper.jpg             desktop wallpaper (metadata stripped)
 ```

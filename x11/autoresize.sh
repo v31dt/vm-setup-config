@@ -1,21 +1,21 @@
 #!/bin/sh
 # ~/.config/i3/autoresize.sh — poll fallback for VM host-window resize.
-#
-# Guest agents (spice-vdagent, vmware-user, VBoxClient) are supposed to call
-# RandR themselves when the host window resizes, but that depends on their
-# own session plumbing (spice-vdagentd socket, vmtoolsd channel, …), which is
-# flaky without a full desktop session driving it. i3 has no display daemon
-# to fall back on either, so this polls for the mismatch directly: whenever
-# an output's *preferred* mode (what the hypervisor just advertised) differs
-# from its *current* mode, apply it. No-op — and no flicker — once they match.
+# Applies the hypervisor's preferred mode when it differs from the current
+# one, then repaints the wallpaper to fit (feh only draws it once, at
+# startup size).
 while :; do
-    xrandr --current | awk '
+    outs=$(xrandr --current | awk '
         / connected/ { out = $1 }
         /\*/         { cur[out] = $1 }
         /\+/         { pref[out] = $1 }
         END { for (o in pref) if (pref[o] != cur[o]) print o }
-    ' | while read -r out; do
-        xrandr --output "$out" --auto
-    done
+    ')
+    if [ -n "$outs" ]; then
+        for out in $outs; do
+            xrandr --output "$out" --auto
+        done
+        feh --no-fehbg --bg-fill ~/.config/i3/wallpaper.jpg 2>/dev/null \
+            || xsetroot -solid "#0b1220"
+    fi
     sleep 1
 done

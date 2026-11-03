@@ -3,8 +3,10 @@
 Minimal **i3 (X11)** setup for a throwaway pentest / HTB testing VM. Written for
 **Kali / Debian (apt)**; an Arch `pacman` line is noted at the end.
 
-Tiling WM + a simple status bar (workspaces · CPU · MEM · VOL · VPN · NET · clock),
-`alacritty` terminal, `rofi` launcher, and the env tweak that stops **Ghidra/Burp**
+Tiling WM + a simple status bar (workspaces · CPU · MEM · VOL · VPN · NET ·
+clock; click NET to pick a network device and connect/disconnect it, like
+Kali's top-bar nm-applet), `alacritty` terminal, `rofi` launcher, and the env
+tweak that stops **Ghidra/Burp**
 from rendering blank. No idle/lock, night light, pomodoro, or other daily-driver
 cruft — just a working tiling desktop.
 
@@ -18,8 +20,12 @@ sudo apt update && sudo apt install -y \
   xserver-xorg xinit x11-xserver-utils \
   maim xclip xdotool feh \
   fonts-dejavu fonts-jetbrains-mono \
-  pulseaudio-utils pavucontrol firefox-esr nautilus
+  pulseaudio-utils pavucontrol firefox-esr nautilus \
+  network-manager
 ```
+
+`network-manager` gives the NET module's click-to-toggle (`nmcli`); Kali's
+desktop images already ship it, so on those this is a no-op.
 
 Then add the **guest tools for your hypervisor** (host↔guest clipboard +
 display auto-resize) — see section 6. In short:
@@ -51,7 +57,7 @@ works on all three.
 ```sh
 sudo pacman -S --needed i3-wm i3status alacritty rofi polybar autotiling \
   xorg-server xorg-xinit xorg-xsetroot maim xclip xdotool feh wmname \
-  ttf-dejavu pulseaudio pavucontrol firefox nautilus
+  ttf-dejavu pulseaudio pavucontrol firefox nautilus networkmanager
 ```
 
 ## 2. Copy the config files
@@ -178,14 +184,15 @@ Note: `l` is **focus-right** here (on the laptop it was lock — not needed on a
 ## Files
 
 ```
-i3/config                 i3 window manager + keybinds
-polybar/config.ini        bar layout and modules
-polybar/launch.sh         restartable bar launcher
-polybar/scripts/ip.sh     primary IPv4 (NET module)
-polybar/scripts/vpn.sh    tun0/tap0 IP (VPN module)
-alacritty/alacritty.toml  terminal (dark-blue theme, padding, cursor)
-x11/.xprofile             Java-on-tiling fix, login env
-x11/.xinitrc              startx entry point
-x11/autoresize.sh         VM host-resize fallback (polls RandR)
-wallpaper.jpg             desktop wallpaper (metadata stripped)
+i3/config                      i3 window manager + keybinds
+polybar/config.ini             bar layout and modules
+polybar/launch.sh              restartable bar launcher
+polybar/scripts/ip.sh          primary IPv4 (NET module)
+polybar/scripts/vpn.sh         tun0/tap0 IP (VPN module)
+polybar/scripts/net-menu.sh    click-left on NET: rofi device picker (nmcli)
+alacritty/alacritty.toml       terminal (dark-blue theme, padding, cursor)
+x11/.xprofile                  Java-on-tiling fix, login env
+x11/.xinitrc                   startx entry point
+x11/autoresize.sh              VM host-resize fallback (polls RandR)
+wallpaper.jpg                  desktop wallpaper (metadata stripped)
 ```
